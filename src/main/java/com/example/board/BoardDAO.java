@@ -1,5 +1,6 @@
-package com.example;
+package com.example.board;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,29 +14,19 @@ import java.util.List;
 public class BoardDAO {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    SqlSession sqlSession;
 
     public int insertBoard(BoardVO vo){
-        String sql = "insert into TEAM_BOARD (title,writer,content,category) values ("
-                + "'" +vo.getTitle() + "',"
-                + "'" +vo.getWriter() + "',"
-                + "'" +vo.getContent() + "',"
-                + "'" +vo.getCategory() + "')";
-        return jdbcTemplate.update(sql);
+        int result = sqlSession.insert("Board.insetBoard",vo);
+        return result;
     }
 
     public int deleteBoard(int seq){
-        String sql = "delete from TEAM_BOARD where seq = " + seq;
-        return jdbcTemplate.update(sql);
+        return sqlSession.delete("Board.deleteBoard", seq);
     }
 
     public int updateBoard(BoardVO vo){
-        String sql = "update TEAM_BOARD set title='" + vo.getTitle() + "',"
-                + " title='" +vo.getTitle() + "',"
-                + " writer='" +vo.getWriter() + "',"
-                + " content='" +vo.getContent() + "',"
-                + " category='" +vo.getCategory() + "' where seq=" + vo.getSeq();
-        return jdbcTemplate.update(sql);
+        return sqlSession.update("Board.updateBoard", vo);
     }
 
 
@@ -55,13 +46,13 @@ public class BoardDAO {
     }
 
     public BoardVO getBoard(int seq){
-        String sql = "select * from TEAM_BOARD where seq=" + seq;
-        return jdbcTemplate.queryForObject(sql, new BoardRowMapper());
+        BoardVO one = sqlSession.selectOne("Board.getBoard", seq);
+        return one;
     }
 
     public List<BoardVO> getBoardList(){
-        String sql = "select * from TEAM_BOARD order by regdate desc";
-        return jdbcTemplate.query(sql, new BoardRowMapper());
+        List<BoardVO> list = sqlSession.selectList("Board.getBoardList");
+        return list;
     }
 
 

@@ -1,7 +1,7 @@
-package com.example;
+package com.example.board;
 
-import  java.util.Date;
-import org.springframework.jdbc.core.JdbcTemplate;
+import java.util.Date;
+
 public class BoardVO {
     private  int seq;
     private String category;
