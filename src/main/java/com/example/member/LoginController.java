@@ -25,35 +25,19 @@ public class LoginController {
         }
 
 
-//        UserVO loginvo = service.getUser(vo);
-//        if ( loginvo != null ){ // 로그인 성공
-//            System.out.println("로그인 성공!");
-//            session.setAttribute("login", loginvo);
-//            returnURL = "redirect:/board/list";
-//        }else { // 로그인 실패
-//            System.out.println("로그인 실패!");
-//            returnURL = "redirect:/login/login";
-//        }
-//        return returnURL;
-
-        // 자동로그인
-        if ("1".equals(vo.getUserid()) && "1234".equals(vo.getPassword())) {
-            UserVO hardCodedLogin = new UserVO();
-            hardCodedLogin.setUserid(vo.getUserid());
-            hardCodedLogin.setPassword(vo.getPassword());
-            hardCodedLogin.setUsername("Hardcoded User");
-
-            System.out.println("로그인 성공!");
-            session.setAttribute("login", hardCodedLogin);
+        UserVO loginvo = service.getUser(vo);
+        if ( loginvo != null ){ // 濡쒓렇�씤 �꽦怨�
+            System.out.println("濡쒓렇�씤 �꽦怨�!");
+            session.setAttribute("login", loginvo);
             returnURL = "redirect:/board/list";
-        } else { // 로그인 실패
-            System.out.println("로그인 실패!");
+        } else { // 濡쒓렇�씤 �떎�뙣
+            System.out.println("濡쒓렇�씤 �떎�뙣!");
             returnURL = "redirect:/login/login";
         }
         return returnURL;
     }
 
-    // 로그아웃 하는 부분
+    // 濡쒓렇�븘�썐 �븯�뒗 遺�遺�
     @RequestMapping(value="/logout")
     public String logout(HttpSession session) {
         session.invalidate();
